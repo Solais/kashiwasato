@@ -1,0 +1,119 @@
+'use client'
+
+import { shuffleTargetDom } from '@/app/utils/shuffleUtil';
+import styles from './index.module.scss';
+import { useState, useEffect } from 'react';
+import shuffleLetters from 'shuffle-letters';
+
+export default function Header() {
+  const [isHovered, setIsHovered] = useState(false);
+  const [lang, setLang] = useState<string>('JAPANESE');
+  const langList = [
+    'ENGLISH',
+    'JAPANESE',
+    'CHINESE',
+  ];
+
+  const handleMouseEnter = (id: string) => {
+    if (!isHovered) {
+      setIsHovered(true);
+      const targetDom = document.querySelector(`#${id}`);
+      shuffleLetters(targetDom, {
+        fps: 100,
+        onComplete: () => {
+          setIsHovered(false);
+        }
+      });
+    }
+  }
+
+  useEffect(() => {
+    const items = document.querySelectorAll('.shuffle');
+    Array.prototype.forEach.call(items, (element) => {
+      shuffleLetters(element, {
+        fps: 50,
+      });
+    });
+  }, []);
+
+  return (
+    <div className={styles.headerBlock}>
+      <div className={styles.leftBlock}>
+        <a>
+          <span 
+            className={`${styles.name} shuffle`}
+            id={`shuffle-company`}
+            onMouseEnter={() => handleMouseEnter(`shuffle-company`)}
+          >KASHIWA SATO</span>
+          <span
+            className={`${styles.title} shuffle`}
+            id={`shuffle-corporation`}
+            onMouseEnter={() => handleMouseEnter(`shuffle-corporation`)}
+          >SAMURAI INC. TOKYO</span>
+        </a>
+      </div>
+      <div className={styles.rightBlock}>
+        <div className={styles.sideMenu}>
+          <ul>
+            <li className={styles.current}>
+              <a>
+                <span
+                  id="shuffle-project" 
+                  className="shuffle"
+                  onMouseEnter={() => handleMouseEnter('shuffle-project')}
+                >PROJECT</span>
+              </a>
+            </li>
+            <li>
+              <a>
+                <span
+                  id="shuffle-profile" 
+                  className="shuffle"
+                  onMouseEnter={() => handleMouseEnter('shuffle-profile')}
+                >PROFILE</span>
+              </a>
+            </li>
+            <li>
+              <a>
+                <span
+                  id="shuffle-contact" 
+                  className="shuffle"
+                  onMouseEnter={() => handleMouseEnter('shuffle-contact')}
+                >CONTACT</span>
+              </a>
+            </li>
+          </ul>
+          <ul className={styles.langSwitch}>
+            {langList.map(langStr => {
+                return (
+                  <li
+                    key={langStr}
+                    className={`${langStr === lang ? styles.current : null}`}
+                    onClick={() => {
+                      setLang(langStr);
+                    }}
+                  >
+                    <a>
+                      <span
+                        id={`shuffle-${langStr}`}
+                        className="shuffle"
+                        onMouseEnter={() => handleMouseEnter(`shuffle-${langStr}`)}
+                      >{langStr}</span>
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </div>
+        <div className={styles.search}>
+          <input placeholder="PLEASE INPUT KEYWORD" />
+          <span className={styles.searchBtn}></span>
+        </div>
+        <a className={styles.menuBtn}>
+          <div className={styles.openMenu}></div>
+        </a>
+      </div>
+    </div>
+  );
+}

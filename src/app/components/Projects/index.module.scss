@@ -1,0 +1,80 @@
+
+.projectContainer {
+  margin-top: 70px;
+  margin-left: 80px;
+  width: auto;
+}
+
+.projectGroup {
+  display: inline-block;
+  min-height: 1%;
+  width: 100%;
+}
+
+.project {
+  width: 272px;
+  float: left;
+  margin-right: 30px;
+  margin-bottom: 23px;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    display: block;
+    height: 272px;
+  }
+
+  .text {
+    .projectName {
+      display: block;
+      margin: 23px 0 14px;
+      height: 1.6em;
+      line-height: 1.6em;
+      font-size: 15px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      letter-spacing: 1.2px;
+    }
+    .projectDesc {
+      display: block;
+      font-size: 12px;
+      line-height: 1.7em;
+      height: 110px;
+      white-space: initial !important;
+      overflow: hidden;
+      color: #000;
+      font-family: var(--font-family);
+      letter-spacing: 0.05em;
+      position: relative;
+
+      p {
+        width: 100%;
+        color: #000;
+        margin-top: 0;
+        margin-bottom: 0;
+        line-height: 1.6em;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        opacity: 0.8;
+        font-weight: 300;
+        &.more {
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: 768px) and (max-width: 1080px) {
+  .projectContainer {
+    margin-left: 20px;
+  }
+}
+
+@media(max-width: 767px) {
+  .text {
+    margin: 25px;
+  }
+}
