@@ -25,5 +25,6 @@
   },
   "devDependencies": {
     "sass": "^1.66.1"
-  }
+  },
+  "repository": "git@github.com:Solais/kashiwasato.git"
 }

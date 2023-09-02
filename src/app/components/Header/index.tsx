@@ -1,13 +1,12 @@
 'use client'
 
-import { shuffleTargetDom } from '@/app/utils/shuffleUtil';
 import styles from './index.module.scss';
 import { useState, useEffect } from 'react';
 import shuffleLetters from 'shuffle-letters';
 
 export default function Header() {
-  const [isHovered, setIsHovered] = useState(false);
-  const [lang, setLang] = useState<string>('JAPANESE');
+  const [lang, setLang] = useState<string>('ENGLISH');
+  const hoverdRecord: Record<string, boolean> = {};
   const langList = [
     'ENGLISH',
     'JAPANESE',
@@ -15,13 +14,14 @@ export default function Header() {
   ];
 
   const handleMouseEnter = (id: string) => {
+    const isHovered = !!hoverdRecord[id];
     if (!isHovered) {
-      setIsHovered(true);
+      hoverdRecord[id] = true;
       const targetDom = document.querySelector(`#${id}`);
       shuffleLetters(targetDom, {
         fps: 100,
         onComplete: () => {
-          setIsHovered(false);
+          hoverdRecord[id] = false;
         }
       });
     }
@@ -88,7 +88,7 @@ export default function Header() {
                 return (
                   <li
                     key={langStr}
-                    className={`${langStr === lang ? styles.current : null}`}
+                    className={`${styles[langStr]} ${langStr === lang ? styles.current : ''}`}
                     onClick={() => {
                       setLang(langStr);
                     }}

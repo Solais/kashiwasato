@@ -7,7 +7,7 @@ import shuffleLetters from 'shuffle-letters';
 
 
 export default function Projects() {
-  const [isHovered, setIsHovered] = useState(false);
+  const hoverdRecord: Record<string, boolean> = {};
   const [projectWidth, setProjectWidth] = useState<number | string>();
   const [projectMargin, setProjectMargin] = useState<number>();
   const [containerMargin, setContainerMargin] = useState<number>();
@@ -39,13 +39,14 @@ export default function Projects() {
   }
 
   const handleMouseEnter = (id: string) => {
+    const isHovered = !!hoverdRecord[id];
     if (!isHovered) {
-      setIsHovered(true);
+      hoverdRecord[id] = true;
       const targetDom = document.querySelector(`#${id}`);
       shuffleLetters(targetDom, {
         fps: 100,
         onComplete: () => {
-          setIsHovered(false);
+          hoverdRecord[id] = false;
         }
       });
     }

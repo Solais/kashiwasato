@@ -74,7 +74,16 @@
 }
 
 @media(max-width: 767px) {
-  .text {
-    margin: 25px;
+  .project {
+    margin-bottom: 0;
+    .projectName {
+      font-size: 18px;
+    }
+    .text {
+      margin: 25px 25px 0 25px;
+    }
+    .more {
+      display: none;
+    }
   }
 }
