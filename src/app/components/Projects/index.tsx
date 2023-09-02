@@ -13,11 +13,11 @@ export default function Projects() {
   const [containerMargin, setContainerMargin] = useState<number>();
 
   useEffect(() => {
-    reSetWidth();
-    window.onresize = reSetWidth;
+    reSetProjectSize();
+    window.onresize = reSetProjectSize;
   }, []);
 
-  const reSetWidth = () => {
+  const reSetProjectSize = () => {
     const width = window.innerWidth;
     if (width > 1350) {
       setContainerMargin(80);
@@ -52,10 +52,6 @@ export default function Projects() {
     }
   }
 
-  const handleMouseLeave = () => {
-    // setIsHovered(false);
-  }
-
   const projects: Project[] = useProjects();
 
   return (
@@ -76,7 +72,6 @@ export default function Projects() {
                 marginRight: projectMargin,
               }}
               onMouseEnter={() => handleMouseEnter(`shuffle-${project.id}`)}
-              onMouseLeave={handleMouseLeave}
             >
               <img src={project.coverUrl}/>
               <div className={styles.text}>

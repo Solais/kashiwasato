@@ -6,6 +6,7 @@ import shuffleLetters from 'shuffle-letters';
 
 export default function Header() {
   const [lang, setLang] = useState<string>('ENGLISH');
+  const [sideMenu, setSideMenu] = useState<boolean>(false);
   const hoverdRecord: Record<string, boolean> = {};
   const langList = [
     'ENGLISH',
@@ -53,7 +54,7 @@ export default function Header() {
         </a>
       </div>
       <div className={styles.rightBlock}>
-        <div className={styles.sideMenu}>
+        <div className={styles.menu}>
           <ul>
             <li className={styles.current}>
               <a>
@@ -111,9 +112,49 @@ export default function Header() {
           <span className={styles.searchBtn}></span>
         </div>
         <a className={styles.menuBtn}>
-          <div className={styles.openMenu}></div>
+          {
+            sideMenu ?
+              <div onClick={() => {
+                setSideMenu(false)
+              }} className={styles.closeMenu}></div> :
+              <div onClick={() => {
+                setSideMenu(true)
+              }} className={styles.openMenu}></div>
+          }
         </a>
       </div>
+      {
+        sideMenu ?
+          <div className={styles.sideMenu}>
+            <ul>
+              <li className={styles.current}>PROJECT</li>
+              <li>PROFILE</li>
+              <li>CONTACT</li>
+            </ul>
+            <ul className={styles.langPanel}>
+              {langList.map(langStr => {
+                  return (
+                    <li
+                      key={`${langStr}-side`}
+                      className={`${langStr === lang ? styles.current : ''}`}
+                      onClick={() => {
+                        setLang(langStr);
+                        setSideMenu(false);
+                      }}
+                    >
+                      {langStr}
+                    </li>
+                  );
+                })
+              }
+            </ul>
+            <div className={styles.searchBlock}>
+              <input placeholder='PLEASE INPUT KEYWORD'/>
+              <span className={styles.searchBtn}>SEARCH</span>
+            </div>
+            <p className={styles.footText}>COPYRIGHT © SAMURAI INC. ALL RIGHTS RESERVED.</p>
+          </div> : null
+      }
     </div>
   );
 }

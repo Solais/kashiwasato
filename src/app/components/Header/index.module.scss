@@ -57,7 +57,7 @@
   margin-top: -15px;
   right: -10px;
 
-  .sideMenu {
+  .menu {
     margin-right: 38px;
     display: block;
     width: auto;
@@ -175,6 +175,89 @@
       background-size: 27px 50px;
       background-image: url(../../../../public/menu-button-mobile.svg);
     }
+
+    .closeMenu {
+      height: 25px;
+      background-repeat: no-repeat;
+      background-position: 0 0;
+      background-size: 27px 50px;
+      background-image: url(../../../../public/close.svg);
+    }
+  }
+}
+
+.sideMenu {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+
+  ul {
+    list-style: none;
+    padding: 70px 0 0 25px;
+    margin: 0 0 80px 0;
+
+    &.langPanel {
+      padding-top: 0;
+    }
+
+    li {
+      color: #999;
+      margin-bottom: 30px;
+      font-size: 16px;
+      height: 14px;
+      line-height: 14px;
+      letter-spacing: 0.1em;
+      &.current {
+        color: #000;
+      }
+    }
+  }
+
+  .searchBlock {
+    padding-left: 25px;
+
+    input {
+      height: 21px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      width: 160px;
+      letter-spacing: 0.05em;
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 0;
+      display: inline-block;
+      width: 190px;
+      border: 1px solid #ccc;
+      position: relative;
+      &::placeholder {
+        font-size: 12px;
+        color: #ccc;
+      }
+    }
+    .searchBtn {
+      color: #fff;
+      text-transform: uppercase;
+      display: inline-block;
+      line-height: 33px;
+      padding: 0 15px;
+      letter-spacing: 0.05em;
+      background-color: #ccc;
+    }
+  }
+
+  .footText {
+    position: absolute;
+    left: 25px;
+    bottom: 35px;
+    letter-spacing: 0.05em;
+    font-size: 10px;
+    color: #ccc;
+    transform-origin: 0 0;
+    transform: scale(0.8, 0.8);
   }
 }
 
@@ -227,7 +310,7 @@
     position: absolute;
     top: 2px;
     right: -55px;
-    .sideMenu {
+    .menu {
       display: none;
     }
     .search {
