@@ -215,6 +215,8 @@ const mockData = JSON.stringify({
   ]
 });
 
+let loaded = false;
+
 interface descData {
   key: string;
   value: string;
@@ -227,23 +229,33 @@ export interface Project {
   desc: descData[];
 }
 
-export function useProjects() {
+export function useProjects(searchText: string) {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    const fetchContent = mockData;
+    const originData = JSON.parse(mockData).data;
 
-    setProjects(JSON.parse(fetchContent).data);
+    // filter by seach text in title
+    if (searchText) {
+      const filteredData = originData.filter((d: Project) => d.title.indexOf(searchText) >= 0);
+      setProjects(filteredData);
+    } else {
+      setProjects(originData);
+    }
 
     setTimeout(() => {
-      const items = document.querySelectorAll('.shuffleHead');
-      Array.prototype.forEach.call(items, (element) => {
-        shuffleLetters(element, {
-          fps: 50,
+      if (!loaded) {
+        loaded = true;
+        const items = document.querySelectorAll('.shuffleHead');
+        Array.prototype.forEach.call(items, (element) => {
+          shuffleLetters(element, {
+            fps: 50,
+            iterations: 4,
+          });
         });
-      });
+      }
     }, 10);
-  }, []);
+  }, [searchText]);
   
   return projects;
 }

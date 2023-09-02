@@ -1,12 +1,16 @@
 'use client'
 
+import { Project, useProjects } from '@/app/hooks/useProjects';
 import styles from './index.module.scss';
-import { Project, useProjects } from './useProjects';
 import { useState, useEffect } from 'react';
 import shuffleLetters from 'shuffle-letters';
 
 
-export default function Projects() {
+export default function Projects({
+  searchText,
+}: {
+  searchText: string;
+}) {
   const hoverdRecord: Record<string, boolean> = {};
   const [projectWidth, setProjectWidth] = useState<number | string>();
   const [projectMargin, setProjectMargin] = useState<number>();
@@ -44,7 +48,7 @@ export default function Projects() {
       hoverdRecord[id] = true;
       const targetDom = document.querySelector(`#${id}`);
       shuffleLetters(targetDom, {
-        fps: 100,
+        fps: 50,
         onComplete: () => {
           hoverdRecord[id] = false;
         }
@@ -52,7 +56,7 @@ export default function Projects() {
     }
   }
 
-  const projects: Project[] = useProjects();
+  const projects: Project[] = useProjects(searchText);
 
   return (
     <div 

@@ -4,7 +4,11 @@ import styles from './index.module.scss';
 import { useState, useEffect } from 'react';
 import shuffleLetters from 'shuffle-letters';
 
-export default function Header() {
+export default function Header({
+  onSearchChange,
+} : {
+  onSearchChange: Function;
+}) {
   const [lang, setLang] = useState<string>('ENGLISH');
   const [sideMenu, setSideMenu] = useState<boolean>(false);
   const hoverdRecord: Record<string, boolean> = {};
@@ -20,12 +24,16 @@ export default function Header() {
       hoverdRecord[id] = true;
       const targetDom = document.querySelector(`#${id}`);
       shuffleLetters(targetDom, {
-        fps: 100,
+        fps: 50,
         onComplete: () => {
           hoverdRecord[id] = false;
         }
       });
     }
+  }
+
+  const handleSearchInput = (event: any) => {
+    onSearchChange(event.target.value);
   }
 
   useEffect(() => {
@@ -108,7 +116,7 @@ export default function Header() {
           </ul>
         </div>
         <div className={styles.search}>
-          <input placeholder="PLEASE INPUT KEYWORD" />
+          <input placeholder="PLEASE INPUT KEYWORD" onChange={handleSearchInput}/>
           <span className={styles.searchBtn}></span>
         </div>
         <a className={styles.menuBtn}>
@@ -149,8 +157,8 @@ export default function Header() {
               }
             </ul>
             <div className={styles.searchBlock}>
-              <input placeholder='PLEASE INPUT KEYWORD'/>
-              <span className={styles.searchBtn}>SEARCH</span>
+              <input placeholder='PLEASE INPUT KEYWORD' onChange={handleSearchInput}/>
+              <span onClick={() => setSideMenu(false)} className={styles.searchBtn}>SEARCH</span>
             </div>
             <p className={styles.footText}>COPYRIGHT © SAMURAI INC. ALL RIGHTS RESERVED.</p>
           </div> : null
