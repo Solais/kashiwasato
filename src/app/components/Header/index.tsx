@@ -1,64 +1,39 @@
 'use client'
 
 import styles from './index.module.scss';
-import { useState, useEffect } from 'react';
-import shuffleLetters from 'shuffle-letters';
+import { useState } from 'react';
+import Shuffle from '../Common/Shuffle';
 
 export default function Header({
   onSearchChange,
+  onSideMenuChanged,
 } : {
   onSearchChange: Function;
+  onSideMenuChanged: Function;
 }) {
   const [lang, setLang] = useState<string>('ENGLISH');
   const [sideMenu, setSideMenu] = useState<boolean>(false);
-  const hoverdRecord: Record<string, boolean> = {};
   const langList = [
     'ENGLISH',
     'JAPANESE',
     'CHINESE',
   ];
 
-  const handleMouseEnter = (id: string) => {
-    const isHovered = !!hoverdRecord[id];
-    if (!isHovered) {
-      hoverdRecord[id] = true;
-      const targetDom = document.querySelector(`#${id}`);
-      shuffleLetters(targetDom, {
-        fps: 50,
-        onComplete: () => {
-          hoverdRecord[id] = false;
-        }
-      });
-    }
+  const triggerSideMenu = (on: boolean) => {
+    setSideMenu(on);
+    onSideMenuChanged(on);
   }
 
   const handleSearchInput = (event: any) => {
     onSearchChange(event.target.value);
   }
 
-  useEffect(() => {
-    const items = document.querySelectorAll('.shuffle');
-    Array.prototype.forEach.call(items, (element) => {
-      shuffleLetters(element, {
-        fps: 50,
-      });
-    });
-  }, []);
-
   return (
     <div className={styles.headerBlock}>
       <div className={styles.leftBlock}>
         <a>
-          <span 
-            className={`${styles.name} shuffle`}
-            id={`shuffle-company`}
-            onMouseEnter={() => handleMouseEnter(`shuffle-company`)}
-          >KASHIWA SATO</span>
-          <span
-            className={`${styles.title} shuffle`}
-            id={`shuffle-corporation`}
-            onMouseEnter={() => handleMouseEnter(`shuffle-corporation`)}
-          >SAMURAI INC. TOKYO</span>
+          <Shuffle id='shuffle-company' className={styles.name} text="KASHIWA SATO"/>
+          <Shuffle id='shuffle-corporation' className={styles.title} text="SAMURAI INC. TOKYO"/>
         </a>
       </div>
       <div className={styles.rightBlock}>
@@ -66,29 +41,17 @@ export default function Header({
           <ul>
             <li className={styles.current}>
               <a>
-                <span
-                  id="shuffle-project" 
-                  className="shuffle"
-                  onMouseEnter={() => handleMouseEnter('shuffle-project')}
-                >PROJECT</span>
+                <Shuffle id='shuffle-project' className="" text="PROJECT"/>
               </a>
             </li>
             <li>
               <a>
-                <span
-                  id="shuffle-profile" 
-                  className="shuffle"
-                  onMouseEnter={() => handleMouseEnter('shuffle-profile')}
-                >PROFILE</span>
+                <Shuffle id='shuffle-profile' className="" text="PROFILE"/>
               </a>
             </li>
             <li>
               <a>
-                <span
-                  id="shuffle-contact" 
-                  className="shuffle"
-                  onMouseEnter={() => handleMouseEnter('shuffle-contact')}
-                >CONTACT</span>
+                <Shuffle id='shuffle-contact' className="" text="CONTACT"/>
               </a>
             </li>
           </ul>
@@ -103,11 +66,7 @@ export default function Header({
                     }}
                   >
                     <a>
-                      <span
-                        id={`shuffle-${langStr}`}
-                        className="shuffle"
-                        onMouseEnter={() => handleMouseEnter(`shuffle-${langStr}`)}
-                      >{langStr}</span>
+                      <Shuffle id={`shuffle-${langStr}`} className="" text={langStr}/>
                     </a>
                   </li>
                 );
@@ -123,10 +82,10 @@ export default function Header({
           {
             sideMenu ?
               <div onClick={() => {
-                setSideMenu(false)
+                triggerSideMenu(false)
               }} className={styles.closeMenu}></div> :
               <div onClick={() => {
-                setSideMenu(true)
+                triggerSideMenu(true)
               }} className={styles.openMenu}></div>
           }
         </a>
@@ -147,7 +106,7 @@ export default function Header({
                       className={`${langStr === lang ? styles.current : ''}`}
                       onClick={() => {
                         setLang(langStr);
-                        setSideMenu(false);
+                        triggerSideMenu(false);
                       }}
                     >
                       {langStr}
@@ -158,7 +117,7 @@ export default function Header({
             </ul>
             <div className={styles.searchBlock}>
               <input placeholder='PLEASE INPUT KEYWORD' onChange={handleSearchInput}/>
-              <span onClick={() => setSideMenu(false)} className={styles.searchBtn}>SEARCH</span>
+              <span onClick={() => triggerSideMenu(false)} className={styles.searchBtn}>SEARCH</span>
             </div>
             <p className={styles.footText}>COPYRIGHT © SAMURAI INC. ALL RIGHTS RESERVED.</p>
           </div> : null

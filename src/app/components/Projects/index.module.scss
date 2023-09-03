@@ -1,20 +1,28 @@
 
-.projectContainer {
-  margin-top: 70px;
-  margin-left: 80px;
-  width: auto;
+@function projectWidth($margin, $count) {
+  $result: calc((100% - $margin * ($count - 1)) / $count);
+  @return $result;
 }
 
-.projectGroup {
-  display: inline-block;
-  min-height: 1%;
+.projectContainer {
+  margin-top: 70px;
   width: 100%;
 }
 
+.projectGroup {
+  min-height: 1%;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 80px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 65px;
+}
+
 .project {
-  width: 272px;
-  float: left;
-  margin-right: 30px;
+  width: projectWidth(65px, 4);
+  flex: 0 1 projectWidth(65px, 4);
+  position: relative;
   margin-bottom: 23px;
   cursor: pointer;
 
@@ -24,18 +32,23 @@
     height: 272px;
   }
 
+  .projectName {
+    display: block;
+    line-height: 1.6em;
+    font-size: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    letter-spacing: 1.2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-top: 293px;
+  }
+
   .text {
-    .projectName {
-      display: block;
-      margin: 23px 0 14px;
-      height: 1.6em;
-      line-height: 1.6em;
-      font-size: 15px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-      letter-spacing: 1.2px;
-    }
     .projectDesc {
       display: block;
       font-size: 12px;
@@ -46,7 +59,7 @@
       color: #000;
       font-family: var(--font-family);
       letter-spacing: 0.05em;
-      position: relative;
+      margin-top: 60px;
 
       p {
         width: 100%;
@@ -67,20 +80,46 @@
   }
 }
 
+@media(min-width: 1081px) and (max-width: 1350px) {
+  .project {
+    width: projectWidth(65px, 3);
+    flex: 0 1 projectWidth(65px, 3);
+  }
+}
+
 @media(min-width: 768px) and (max-width: 1080px) {
-  .projectContainer {
-    margin-left: 20px;
+  .projectGroup {
+    padding: 0 20px;
+    column-gap: 20px;
+  }
+  .project {
+    width: projectWidth(20px, 2);
+    flex: 0 1 projectWidth(20px, 2);
   }
 }
 
 @media(max-width: 767px) {
+  .projectGroup {
+    padding: 0;
+    column-gap: 0;
+  }
   .project {
+    width: 100%;
+    flex: 1;
     margin-bottom: 0;
+    img {
+      height: 100vw;
+    }
     .projectName {
+      position: relative;
       font-size: 18px;
+      padding: 20px 0 0 25px;
     }
     .text {
-      margin: 25px 25px 0 25px;
+      margin: 0 25px;
+      .projectDesc {
+        margin-top: 20px;
+      }
     }
     .more {
       display: none;

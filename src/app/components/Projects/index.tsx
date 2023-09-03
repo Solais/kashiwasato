@@ -2,96 +2,45 @@
 
 import { Project, useProjects } from '@/app/hooks/useProjects';
 import styles from './index.module.scss';
-import { useState, useEffect } from 'react';
-import shuffleLetters from 'shuffle-letters';
+import Shuffle from '../Common/Shuffle';
 
 
 export default function Projects({
   searchText,
+  hideProjects,
 }: {
   searchText: string;
+  hideProjects: boolean;
 }) {
-  const hoverdRecord: Record<string, boolean> = {};
-  const [projectWidth, setProjectWidth] = useState<number | string>();
-  const [projectMargin, setProjectMargin] = useState<number>();
-  const [containerMargin, setContainerMargin] = useState<number>();
-
-  useEffect(() => {
-    reSetProjectSize();
-    window.onresize = reSetProjectSize;
-  }, []);
-
-  const reSetProjectSize = () => {
-    const width = window.innerWidth;
-    if (width > 1350) {
-      setContainerMargin(80);
-      setProjectMargin(65);
-      setProjectWidth(Math.floor(((width - 80) - 65 * 4) / 4));
-    } else if (width > 1080) {
-      setContainerMargin(80);
-      setProjectMargin(65);
-      setProjectWidth(Math.floor(((width - 80) - 65 * 3) / 3));
-    } else if (width > 767) {
-      setContainerMargin(20);
-      setProjectMargin(20);
-      setProjectWidth(Math.floor(((width - 20) - 20 * 2) / 2));
-    } else {
-      setContainerMargin(0);
-      setProjectMargin(0);
-      setProjectWidth('100%');
-    }
-  }
-
-  const handleMouseEnter = (id: string) => {
-    const isHovered = !!hoverdRecord[id];
-    if (!isHovered) {
-      hoverdRecord[id] = true;
-      const targetDom = document.querySelector(`#${id}`);
-      shuffleLetters(targetDom, {
-        fps: 50,
-        onComplete: () => {
-          hoverdRecord[id] = false;
-        }
-      });
-    }
-  }
 
   const projects: Project[] = useProjects(searchText);
 
   return (
     <div 
       className={styles.projectContainer}
-      style={{
-        marginLeft: containerMargin,
-      }}
     >
-      <div className={styles.projectGroup}>
-        {projects.map(project => {
-          return (
-            <a 
-              key={project.id}
-              className={styles.project}
-              style={{
-                width: projectWidth,
-                marginRight: projectMargin,
-              }}
-              onMouseEnter={() => handleMouseEnter(`shuffle-${project.id}`)}
-            >
-              <img src={project.coverUrl}/>
-              <div className={styles.text}>
-                <span
-                  id={`shuffle-${project.id}`}
-                  className={`${styles.projectName} shuffleHead`}
-                >{project.title}</span>
-                <div className={styles.projectDesc}>
-                  {project.desc.map(d => (<p key={d.key}>{d.key} : {d.value}</p>))}
-                  <p className={styles.more}>READ MORE +</p>
+      {
+        hideProjects ? null :
+        <div className={styles.projectGroup}>
+          {projects.map(project => {
+            return (
+              <a 
+                key={project.id}
+                className={styles.project}
+              >
+                <img src={project.coverUrl}/>
+                <Shuffle id={`shuffle-${project.id}`} className={styles.projectName} text={project.title}/>
+                <div className={styles.text}>
+                  <div className={styles.projectDesc}>
+                    {project.desc.map(d => (<p key={d.key}>{d.key} : {d.value}</p>))}
+                    <p className={styles.more}>READ MORE +</p>
+                  </div>
                 </div>
-              </div>
-            </a>
-          );
-        })}
-      </div>
+              </a>
+            );
+          })}
+        </div>
+      }
     </div>
   );
 
